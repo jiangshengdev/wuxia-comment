@@ -8,14 +8,18 @@ import {
 } from "./prompt.js";
 import { z } from "zod";
 import { StructuredOutputParser } from "langchain/output_parsers";
-import { Ollama } from "@langchain/ollama";
+import { ChatOpenAI } from "@langchain/openai";
+import 'dotenv/config'
 
 // 初始化模型
-const llm = new Ollama({
-  model: "qwen2.5:7b",
-  temperature: 1.5, // 高温，降低概论，提高多样性
-  frequency_penalty: 1, // 降低已出现token的再次出现概率，增加表达方式多样性
-  verbose: true, // 打印模型输出
+const llm = new ChatOpenAI({
+  model: "qwen2.5-72b-instruct",
+  temperature: 1,
+  streaming: true,
+  openAIApiKey: process.env.OPENAI_API_KEY,
+  verbose: true,
+}, {
+  baseURL: process.env.OPENAI_BASE_URL
 });
 
 // 创建输出解析器
@@ -28,7 +32,7 @@ const outputParser = StructuredOutputParser.fromZodSchema(
 // 最后一步的 runnable
 async function runnableOutputParser(input) {
   // 解析输出以获取纯代码内容
-  const parsed = await outputParser.parse(input.annotatedCode);
+  const parsed = await outputParser.parse(input.annotatedCode.content); // 修改此行，访问 content 属性
 
   // 确保返回的代码是字符串
   if (typeof parsed.code !== "string") {

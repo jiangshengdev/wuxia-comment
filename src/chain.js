@@ -9,6 +9,7 @@ import {
 import { z } from "zod";
 import { StructuredOutputParser } from "langchain/output_parsers";
 import { Ollama } from "@langchain/ollama";
+import 'dotenv/config'
 
 // 初始化模型
 const llm = new Ollama({

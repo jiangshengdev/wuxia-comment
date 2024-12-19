@@ -80,7 +80,7 @@ export const chain3 = [
       const response = await prompt3_1_codeAnalysis
         .pipe(llm)
         .invoke({ code: input.code });
-      return response;
+      return response.content;
     },
   },
   {
@@ -90,7 +90,7 @@ export const chain3 = [
       const response = await prompt3_2_wuxiaSetting
         .pipe(llm)
         .invoke({ analysis: input.analysis });
-      return response;
+      return response.content;
     },
   },
   {
@@ -100,7 +100,7 @@ export const chain3 = [
       const response = await prompt3_3_plotDesign
         .pipe(llm)
         .invoke({ setting: input.setting });
-      return response;
+      return response.content;
     },
   },
   {
